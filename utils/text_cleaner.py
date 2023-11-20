@@ -63,7 +63,7 @@ def create_csv(QA):
 
     header = ['NO', 'Sentence', 'book_name']
 
-    with open('book5.csv', 'w', encoding='UTF8') as f:
+    with open('../book5.csv', 'w', encoding='UTF8') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         writer.writerows(rows)
@@ -105,11 +105,11 @@ def replace_digits_with_string(text):
     return text
 
 if __name__ == '__main__':
-    df1 = pd.read_csv('book1.csv')
-    df2 = pd.read_csv('book2.csv')
-    df3 = pd.read_csv('book3.csv')
-    df4 = pd.read_csv('book4.csv')
-    df5 = pd.read_csv('book5.csv')
+    df1 = pd.read_csv('../book1.csv')
+    df2 = pd.read_csv('../book2.csv')
+    df3 = pd.read_csv('../book3.csv')
+    df4 = pd.read_csv('../book4.csv')
+    df5 = pd.read_csv('../book5.csv')
     print(f'{len(df1)}  {len(df2)} {len(df3)}  {len(df4)}  {len(df5)}')
 
     # full_txt = ' '

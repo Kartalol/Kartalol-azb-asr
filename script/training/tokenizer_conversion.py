@@ -16,7 +16,7 @@ for i, (token, token_id) in enumerate(marian_vocab.items()):
 from transformers import WhisperTokenizer
 
 # Load Whisper tokenizer
-whisper_tokenizer = WhisperTokenizer.from_pretrained("openai/whisper-large-v3-turbo")
+whisper_tokenizer = WhisperTokenizer.from_pretrained("openai/whisper-small")
 
 # Replace Whisper vocabulary with Marian vocabulary
 whisper_tokenizer.vocab = marian_vocab
@@ -24,20 +24,20 @@ whisper_tokenizer.ids_to_tokens = {v: k for k, v in marian_vocab.items()}
 whisper_tokenizer.tokens_to_ids = marian_vocab
 
 # Save the updated tokenizer for future use
-whisper_tokenizer.save_pretrained("whisper-en-azb-tokenizer")
+whisper_tokenizer.save_pretrained("whisper-small-en-azb-tokenizer")
 print("Updated Whisper tokenizer saved successfully.")
 
 from transformers import WhisperProcessor, WhisperFeatureExtractor
 
 # Load the Whisper feature extractor
-feature_extractor = WhisperFeatureExtractor.from_pretrained("openai/whisper-large-v3-turbo")
+feature_extractor = WhisperFeatureExtractor.from_pretrained("openai/whisper-small")
 
 # Load the updated tokenizer
-updated_tokenizer = WhisperTokenizer.from_pretrained("whisper-en-azb-tokenizer")
+updated_tokenizer = WhisperTokenizer.from_pretrained("whisper-small-en-azb-tokenizer")
 
 # Create a new WhisperProcessor
 processor = WhisperProcessor(tokenizer=updated_tokenizer, feature_extractor=feature_extractor)
-processor.save_pretrained("./whisper-en-azb-tokenizer")
+processor.save_pretrained("whisper-small-en-azb-tokenizer")
 
 
 """

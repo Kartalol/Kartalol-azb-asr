@@ -1,7 +1,10 @@
+import numpy as np
 from typing import Final
 from telegram import Update, Document
 from telegram.ext import MessageHandler, Filters, CallbackContext, Updater
 from pydub import AudioSegment
+import torch
+from silero_vad import get_speech_timestamps
 
 TOKEN: Final = 'TELEGRAM_BOT_TOKEN'
 BOT_USERNAME: Final = 'TELEGRAM_BOT_ID'
@@ -41,7 +44,20 @@ def handle_voice(update: Update, context: CallbackContext):
         # Download the file
         new_file = context.bot.get_file(update.message.voice.file_id)
         new_file.download(ogg_file_name)
-        msg.reply_text("Download succeeded!")
+
+        model, utils = load_vad_model()
+        audio = load_audio(ogg_file_name)
+        speech_timestamps = detect_speech_intervals(audio, model)
+        audio_segment = AudioSegment.from_ogg(ogg_file_name)
+        parts = []
+        for i, ts in enumerate(speech_timestamps):
+            start_ms = int(ts['start'] * 1000 / 16000)
+            end_ms = int(ts['end'] * 1000 / 16000)
+            segment = audio_segment[start_ms:end_ms]
+            parts.append(segment)
+            segment.export(f"{chat_title}_{caption}_sentence_{i}.ogg", format="ogg")
+
+        msg.reply_text("Download & Segmentation succeeded!")
 
         # Convert to MP3
         # mp3_file_name = f'{chat_title}_{caption}.mp3'
@@ -88,6 +104,20 @@ def handle_files(update: Update, context: CallbackContext):
     new_file = context.bot.get_file(attach.file_id)
     new_file.download(file_name)
     msg.reply_text(f"file '{file_name}' has been downloaded and saved successfully.")
+
+def load_vad_model():
+    model, utils = torch.hub.load(repo_or_dir='snakers4/silero-vad',
+                              model='silero_vad',
+                              force_reload=True)
+    return model, utils
+
+def load_audio(file_path):
+    audio = AudioSegment.from_ogg(file_path)
+    audio = audio.set_channels(1).set_frame_rate(16000)
+    return np.array(audio.get_array_of_samples(), dtype=np.float32) / 32768.0
+
+def detect_speech_intervals(audio, model):
+    return get_speech_timestamps(audio, model, sampling_rate=16000)
 
 
 if __name__ == '__main__':

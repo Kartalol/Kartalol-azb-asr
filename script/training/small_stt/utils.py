@@ -113,7 +113,10 @@ import glob
 from pydub.utils import mediainfo
 from tqdm import tqdm
 def concatinate_json_files(json_folder, audio_folder, output_path, target_file):
-
+    """
+    Read all json files and save it in csv files, 
+    it is poosible make unite json file as well.
+    """
     # Collect all .json files
     json_files = glob.glob(os.path.join(json_folder, "*.json"))
 
@@ -161,6 +164,18 @@ def concatinate_json_files(json_folder, audio_folder, output_path, target_file):
     """
     print(f"✅ Done! Merged entries into 'merged_transcriptions.json'")
 
+def check_random_sentences(csv_path):
+
+    df = pd.read_csv(csv_path)
+    for i, line in enumerate(df.iterrows()):
+        if i % 800 == 0:
+            print(f"{line[1]['text']}\n")
+            print(f"{line[1]['azb']}\n")
+        if i > 60000:
+            break
+
+
+
 if __name__ == "__main__":
     audio_dir = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/audio/output_audio/"
 
@@ -176,5 +191,7 @@ if __name__ == "__main__":
     target_file = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/sentences/merged_transcriptions.csv"
     # #read_excel_into_json(excel_path,json_path, output_path)
     # read_csv_into_json(csv_path, json_path, output_path)
-    concatinate_json_files(json_folder, audio_dir, output_path, target_file)
+    #concatinate_json_files(json_folder, audio_dir, output_path, target_file)
+    csv_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/sentences/merged_transcriptions.csv"
+    check_random_sentences(csv_path)
     pass

@@ -1,7 +1,9 @@
 import pandas as pd
-from datasets import load_dataset
 import json 
 import os
+import glob
+from pydub.utils import mediainfo
+from tqdm import tqdm
 from pydub import AudioSegment
 
 def convert_tsv_to_csv(tsv_filename="train.tsv", columns_name=["sentence"]):
@@ -107,11 +109,7 @@ def check_missing_files(json_path,audio_dir):
     print(missing)
     breakpoint()
 
-import os
-import json
-import glob
-from pydub.utils import mediainfo
-from tqdm import tqdm
+
 def concatinate_json_files(json_folder, audio_folder, output_path, target_file):
     """
     Read all json files and save it in csv files, 
@@ -174,24 +172,84 @@ def check_random_sentences(csv_path):
         if i > 60000:
             break
 
+def convert_xlsx_json(xlsx_path, audio_dir,output_json_path):
 
+    # === READ EXCEL ===
+    df = pd.read_excel(xlsx_path)
+    df = df.dropna(subset=["id", "azb"])  # drop rows with missing ID or text
+    df["id"] = df["id"].astype(str)       # ensure IDs are strings for comparison
 
+    # === BUILD OUTPUT ===
+    data = []
+    supported_exts = (".wav", ".mp4", ".ogg",".mp3")
+    
+    for fname in os.listdir(audio_dir):
+        
+        if not fname.lower().endswith(supported_exts):
+            continue
+        
+        file_id = fname.split("-")[0]  # assumes format like: "1_xyz.wav"
+        match = df[df["id"] == file_id]
+        if match.empty:
+            continue
+
+        text = match.iloc[0]["azb"]
+        audio_path = os.path.join(audio_dir, fname)
+
+        try:
+            audio = AudioSegment.from_file(audio_path)
+            duration = round(len(audio) / 1000.0, 4)
+        except Exception as e:
+            print(f"Skipping {audio_path} due to error: {e}")
+            continue
+
+        data.append({
+            "audio_filepath": fname,
+            "duration": duration,
+            "text": text
+        })
+
+    # === SAVE JSON ===
+    with open(output_json_path, "w", encoding="utf-8") as f:
+        json.dump({"data": data}, f, ensure_ascii=False, indent=2)
+
+    print(f"✅ Saved {len(data)} entries to {output_json_path}")
+
+def df_nan_row(df_path):
+    df = pd.read_csv(df_path)
+    dff = df[df['prediction'].isna() | (df['prediction'].astype(str).str.strip() == "")]
+    breakpoint()
+    print(dff)
 if __name__ == "__main__":
-    audio_dir = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/audio/output_audio/"
+    base_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/"
 
-    # json_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/sentences/training_20250702.json"
+    #audio_dir = os.path.join(base_path,"audio/output_audio/")
+    # json_path = os.path.join(base_path,"sentences/training_20250702.json")
     # check_missing_files(json_path, audio_dir)
-    #json_analysis(json_path)
+    # json_analysis(json_path)
+
     # How to concatinate json and xlsx
-    # excel_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/sentences/VoxLingua107_AZ_AZB.xlsx"
-    # csv_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/sentences/common_voices_az_azb_sentences.csv"
-    # json_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/sentences/training_20250702.json"
-    output_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/sentences/training_20250703.json"
-    json_folder = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/json/json_files/"
-    target_file = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/sentences/merged_transcriptions.csv"
-    # #read_excel_into_json(excel_path,json_path, output_path)
+    # excel_path = os.path.join(base_path, "sentences/VoxLingua107_AZ_AZB.xlsx")
+    # csv_path = os.path.join(base_path, "sentences/common_voices_az_azb_sentences.csv")
+    # json_path = os.path.join(base_path, "sentences/training_20250702.json")
+    # output_path = os.path.join(base_path, "sentences/training_20250703.json")
+    # json_folder = os.path.join(base_path,"json/json_files/")
+    #target_file = os.path.join(base_path, "sentences/merged_transcriptions.csv")
+    # read_excel_into_json(excel_path,json_path, output_path)
+
     # read_csv_into_json(csv_path, json_path, output_path)
+
     #concatinate_json_files(json_folder, audio_dir, output_path, target_file)
-    csv_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/sentences/merged_transcriptions.csv"
-    check_random_sentences(csv_path)
-    pass
+
+    # csv_path = os.path.join(base_path, "sentences/merged_transcriptions.csv")
+    # check_random_sentences(csv_path)
+
+    # How to read from xlsx file get info and save in json file
+    # xlsx_path = os.path.join(base_path, "kartalol_gold_testset/sentences.xlsx")
+    # audio_dir = os.path.join(base_path, "kartalol_gold_testset/voices")
+    # output_json_path = os.path.join(base_path, "kartalol_gold_testset/meta_data.json")
+    # convert_xlsx_json(xlsx_path, audio_dir,output_json_path)
+
+    #How to find nan row
+    df_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/kartalol_gold_testset/results.csv"
+    df_nan_row(df_path)

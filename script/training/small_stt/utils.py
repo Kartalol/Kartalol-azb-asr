@@ -63,11 +63,11 @@ def read_csv_into_json(csv_path, json_path, output_path):
 
     new_data = []
     for _, row in df.iterrows():
-        if len(row["sentence"].split(" ")) > 7:
+        if len(row["text"].split(" ")) > 7:
             new_data.append({
-                "audio_filepath": row["path"],
-                "duration": 0,
-                "text": row["sentence"]  # Only keeping azb text
+                "audio_filepath": row["audio_filepath"],
+                "duration": row["duration"],
+                "text": row["azb"]  # Only keeping azb text
             })
 
     # Step 2: Load the old JSON
@@ -220,24 +220,32 @@ def df_nan_row(df_path):
     dff = df[df['prediction'].isna() | (df['prediction'].astype(str).str.strip() == "")]
     breakpoint()
     print(dff)
+
+def wer_cer_analysis(df_path):
+    df = pd.read_csv(df_path)
+    
+    breakpoint()
+    print("dff")
+
+
 if __name__ == "__main__":
     base_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/"
 
     #audio_dir = os.path.join(base_path,"audio/output_audio/")
-    # json_path = os.path.join(base_path,"sentences/training_20250702.json")
+    # json_path = os.path.join(base_path,"sentences/training_20250717.json")
     # check_missing_files(json_path, audio_dir)
     # json_analysis(json_path)
 
     # How to concatinate json and xlsx
     # excel_path = os.path.join(base_path, "sentences/VoxLingua107_AZ_AZB.xlsx")
-    # csv_path = os.path.join(base_path, "sentences/common_voices_az_azb_sentences.csv")
+    # csv_path = os.path.join(base_path, "sentences/merged_transcriptions.csv")
     # json_path = os.path.join(base_path, "sentences/training_20250702.json")
-    # output_path = os.path.join(base_path, "sentences/training_20250703.json")
+    # output_path = os.path.join(base_path, "sentences/training_20250717.json")
     # json_folder = os.path.join(base_path,"json/json_files/")
     #target_file = os.path.join(base_path, "sentences/merged_transcriptions.csv")
     # read_excel_into_json(excel_path,json_path, output_path)
 
-    # read_csv_into_json(csv_path, json_path, output_path)
+    #read_csv_into_json(csv_path, json_path, output_path)
 
     #concatinate_json_files(json_folder, audio_dir, output_path, target_file)
 
@@ -245,11 +253,14 @@ if __name__ == "__main__":
     # check_random_sentences(csv_path)
 
     # How to read from xlsx file get info and save in json file
-    # xlsx_path = os.path.join(base_path, "kartalol_gold_testset/sentences.xlsx")
+    # xlsx_path = os.path.join(base_path, "kartalol_gold_testset/voice to speack sentences.xlsx")
     # audio_dir = os.path.join(base_path, "kartalol_gold_testset/voices")
     # output_json_path = os.path.join(base_path, "kartalol_gold_testset/meta_data.json")
     # convert_xlsx_json(xlsx_path, audio_dir,output_json_path)
 
     #How to find nan row
     df_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/kartalol_gold_testset/results.csv"
-    df_nan_row(df_path)
+    #df_nan_row(df_path)
+
+    # Analyis wer cer
+    wer_cer_analysis(df_path)

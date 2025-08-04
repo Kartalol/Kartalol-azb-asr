@@ -4,8 +4,8 @@ from transformers import WhisperForConditionalGeneration, WhisperProcessor
 import librosa
 import pandas as pd
 # Paths
-model_dir = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/model/whisper-azb-finetuned-20250702" # directory where your model is saved
-audio_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/az/common_voice_az_35249853.mp3"
+model_dir = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/model/whisper-azb-finetuned-20250717" # directory where your model is saved
+audio_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/kartalol_gold_testset/voices/278-m-jalil-audio_2024-05-25_22-53-21.ogg"
 # path to your test audio file
 
 processor = WhisperProcessor.from_pretrained(model_dir)
@@ -26,7 +26,7 @@ model = model.to(device)
 
 with torch.no_grad():
     predicted_ids = model.generate(inputs.input_features.to(device))
-    breakpoint()
+    #breakpoint()
     transcription = processor.batch_decode(predicted_ids, skip_special_tokens=True)[0]
 gt = pd.read_csv("../../../dataset/sentences/common_voices_az_azb_sentences.csv")
 autdio_name = audio_path.split("/")[-1]

@@ -11,8 +11,8 @@ from transformers import (
 )
 
 # Set your audio directory and JSON path
-audio_dir = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/az/"
-json_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/sentences/training_20250703.json"
+audio_dir = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/kartal_general_voices/"
+json_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/sentences/training_20250717.json"
 
 # Load JSON data
 with open(json_path, "r", encoding="utf-8") as f:
@@ -21,6 +21,7 @@ with open(json_path, "r", encoding="utf-8") as f:
 # Convert to DataFrame and prepare columns
 df = pd.DataFrame(data)
 df["audio"] = df["audio_filepath"].apply(lambda x: os.path.join(audio_dir, x))
+
 df.rename(columns={"text": "sentence"}, inplace=True)
 
 # Create Hugging Face Dataset
@@ -51,6 +52,9 @@ class WhisperDataCollator:
             array = f["audio"]["array"]
             text = f["sentence"]
 
+            if not isinstance(text, str) or not text.strip():
+                text = "<unk>"  # fallback if empty or invalid
+
             # Manually pad or truncate to exactly 30 seconds
             if len(array) < self.max_samples:
                 pad_width = self.max_samples - len(array)
@@ -71,18 +75,17 @@ class WhisperDataCollator:
             texts,
             return_tensors="pt",
             padding=True,
-            truncation=True,            # ✅ truncate if too long
+            truncation=True,
             max_length=448 
         ).input_ids
 
         inputs["labels"] = labels
         return inputs
-
 # Training arguments
 from transformers import Seq2SeqTrainingArguments
 
 training_args = Seq2SeqTrainingArguments(
-    output_dir="/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/model/whisper-azb-finetuned-20250702",
+    output_dir="/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/model/whisper-azb-finetuned-20250717",
     per_device_train_batch_size=8,
     num_train_epochs=10,
     fp16=True,

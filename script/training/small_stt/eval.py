@@ -50,6 +50,8 @@ def evaluation(base_path, model_dir):
                 "duration": audio_file_name['duration'],
                 "grand_truth": audio_file_name['text'],
                 "prediction": transcription,
+                "wer": wer(audio_file_name['text'], transcription),
+                "cer": cer(audio_file_name['text'], transcription)
                 }
         results.append(result)    
     pd.DataFrame(results).to_csv(output_path)
@@ -65,7 +67,7 @@ def results_analysis(base_path):
 if __name__ == "__main__":
     # Paths
     base_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset"
-    model_dir = os.path.join(base_path, "model/whisper-azb-finetuned-20250702") # directory where your model is saved
+    model_dir = os.path.join(base_path, "model/whisper-azb-finetuned-20250717") # directory where your model is saved
     # path to your test audio file
-    # evaluation(base_path, model_dir)
+    evaluation(base_path, model_dir)
     results_analysis(base_path)

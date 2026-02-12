@@ -1,3 +1,5 @@
+# © 2026 Kartal Ol NGO. Confidential and proprietary.
+# Internal use only. Unauthorized use or distribution is prohibited.
 
 from transformers import Wav2Vec2ForCTC, AutoProcessor
 import torch

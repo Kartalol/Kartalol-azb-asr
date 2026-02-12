@@ -1,3 +1,6 @@
+# © 2026 Kartal Ol NGO. Confidential and proprietary.
+# Internal use only. Unauthorized use or distribution is prohibited.
+
 import pandas as pd
 import json 
 import os

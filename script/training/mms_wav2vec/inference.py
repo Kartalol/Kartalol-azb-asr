@@ -31,4 +31,6 @@ def infer(file: str):
     return fprocessor.decode(pred_ids)
 
 
-infer("/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/kartalol_gold_testset/voices/1-@Danulduzuyam-audio_2023-11-27_13-56-10.ogg")
+p = infer("/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/kartalol_gold_testset/voices/1-@Danulduzuyam-audio_2023-11-27_13-56-10.ogg")
+
+print(f"{p} is n...")

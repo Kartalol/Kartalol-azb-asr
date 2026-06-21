@@ -14,8 +14,8 @@ from transformers import (
 )
 
 # Set your audio directory and JSON path
-audio_dir = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/kartal_general_voices/"
-json_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/sentences/training_20250717.json"
+audio_dir = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/KartalOl_azb_voices_0_0_1/"
+json_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/sentences/KartalOl_general_voices_0_0_1_training.json"
 
 # Load JSON data
 with open(json_path, "r", encoding="utf-8") as f:
@@ -30,14 +30,13 @@ df.rename(columns={"text": "sentence"}, inplace=True)
 # Create Hugging Face Dataset
 dataset = Dataset.from_pandas(df)
 dataset = dataset.cast_column("audio", Audio(sampling_rate=16000))
-dataset = dataset.train_test_split(test_size=0.1)
+dataset = dataset.train_test_split(test_size=0.01)
 train_dataset = dataset["train"]
 eval_dataset = dataset["test"]
 # Load Whisper model and processor
-model_name = "openai/whisper-tiny"
+model_name = "openai/whisper-base"
 processor = WhisperProcessor.from_pretrained(model_name)
 model = WhisperForConditionalGeneration.from_pretrained(model_name)
-
 # Dynamic data collator
 import numpy as np
 
@@ -88,8 +87,8 @@ class WhisperDataCollator:
 from transformers import Seq2SeqTrainingArguments
 
 training_args = Seq2SeqTrainingArguments(
-    output_dir="/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/model/whisper-azb-finetuned-20250717",
-    per_device_train_batch_size=8,
+    output_dir="/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset/model/whisper-azb-finetuned-base-20251104",
+    per_device_train_batch_size=1,
     num_train_epochs=10,
     fp16=True,
     save_strategy="epoch",          # ✅ Save at the end of each epoch

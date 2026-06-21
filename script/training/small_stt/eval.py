@@ -10,7 +10,7 @@ import os
 import json
 
 def evaluation(base_path, model_dir):
-    output_path = os.path.join(base_path, "kartalol_gold_testset/results.csv")
+    output_path = os.path.join(base_path, "kartalol_gold_testset/results_meduim_base_1202.csv")
     grand_truth_path = os.path.join(base_path, "kartalol_gold_testset/meta_data.json")
     with open(grand_truth_path, "r", encoding="utf-8") as f:
         json_info = json.load(f)
@@ -60,7 +60,7 @@ def evaluation(base_path, model_dir):
     pd.DataFrame(results).to_csv(output_path)
 
 def results_analysis(base_path):
-    output_path = os.path.join(base_path, "kartalol_gold_testset/results.csv")
+    output_path = os.path.join(base_path, "kartalol_gold_testset/results_meduim_base_1202.csv")
     df = pd.read_csv(output_path)
     error = wer(df['grand_truth'].tolist(), df['prediction'].tolist())
     print(f"WER: {error:.2%}")
@@ -70,7 +70,7 @@ def results_analysis(base_path):
 if __name__ == "__main__":
     # Paths
     base_path = "/home/amber/Desktop/KartalOl/code/Kartalol-speech-recognition/dataset"
-    model_dir = os.path.join(base_path, "model/whisper-azb-finetuned-20250717") # directory where your model is saved
+    model_dir = os.path.join(base_path, "model/whisper-azb-finetuned-base-20251104/") # directory where your model is saved
     # path to your test audio file
     evaluation(base_path, model_dir)
     results_analysis(base_path)

@@ -1,3 +1,8 @@
+# © 2026 Kartal Ol NGO. Confidential and proprietary.
+# Internal use only. Unauthorized use or distribution is prohibited.
+
+
+from jiwer import wer, cer
 import torch
 from transformers import WhisperForConditionalGeneration, WhisperProcessor
 import librosa

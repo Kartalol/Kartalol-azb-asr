@@ -80,20 +80,87 @@ Entries are reported as **WER / CER / DIR**.
 ## Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/south-azerbaijani-asr-benchmark.git
-cd south-azerbaijani-asr-benchmark
+git clone https://github.com/Kartalol/Kartalol-azb-asr
+cd Kartalol-azb-asr
 pip install -r requirements.txt
 ```
 
 ## Dataset
 
-The training and evaluation datasets are hosted on Hugging Face.
+This repository contains the training and evaluation code only. The speech data and transcripts must be downloaded from their original sources. The corpus combines community-collected South Azerbaijani speech, VoxLingua107 Azerbaijani audio, BHOSAI pseudo-labelled Azerbaijani audio, and the released AZB GoldSet benchmark.
+
+
+### 1. AZB ASR corpus and transcripts
+
+The South Azerbaijani ASR corpus and transcript resources are available on Hugging Face:
 
 ```python
 from datasets import load_dataset
 
-dataset = load_dataset("Kartal-Ol/azb-asr-corpus")
+azb_corpus = load_dataset("Kartal-Ol/azb-asr-corpus")
 ```
+
+### 2. Community-collected South Azerbaijani ASR data
+
+The main community-driven ASR dataset is hosted on Hugging Face:
+
+```python
+from datasets import load_dataset
+
+community_dataset = load_dataset("yoyo-research-group/south-azerbaijani-asr")
+```
+This dataset contains the AZB text/transcription resources used to align or support the external audio sources.
+
+### 3. VoxLingua107 Azerbaijani audio
+
+The VoxLingua107 Azerbaijani audio must be downloaded separately from the original source:
+
+```bash
+wget https://cs.taltech.ee/staff/tanel.alumae/data/voxlingua107/az.zip
+unzip az.zip -d data/voxlingua107_az
+```
+
+The corresponding AZB transcripts/resources are available from:
+
+```text
+https://huggingface.co/datasets/Kartal-Ol/azb-asr-corpus
+```
+
+### 4. BHOSAI pseudo-labelled Azerbaijani audio
+
+The BHOSAI pseudo-labelled Azerbaijani voice data is hosted on Hugging Face:
+
+```python
+from datasets import load_dataset
+
+bhosai_audio = load_dataset("BHOSAI/PseudoLabelled_Azerbaijani_Voices")
+```
+
+The corresponding AZB text resources are available from:
+
+```python
+azb_corpus = load_dataset("Kartal-Ol/azb-asr-corpus")
+```
+
+### 5. AZB GoldSet benchmark
+
+The released South Azerbaijani GoldSet benchmark is hosted on Hugging Face:
+
+```python
+from datasets import load_dataset
+
+goldset = load_dataset("Kartal-Ol/AZB-ASR-Gold-Testset")
+```
+
+### Summary of Data Sources
+
+| Component                          | Audio Source                                                        | Transcript / Text Source                    |
+| ---------------------------------- | ------------------------------------------------------------------- | ------------------------------------------- |
+| Community ASR data                 | `[yoyo-research-group/south-azerbaijani-asr](https://huggingface.co/datasets/yoyo-research-group/south-azerbaijani-asr)`                         | `yoyo-research-group/south-azerbaijani-asr` |
+| VoxLingua107 Azerbaijani           | `[voxlingua107](https://cs.taltech.ee/staff/tanel.alumae/data/voxlingua107/az.zip)` | `Kartal-Ol/azb-asr-corpus`                  |
+| BHOSAI pseudo-labelled Azerbaijani | `[BHOSAI/PseudoLabelled_Azerbaijani_Voices](https://huggingface.co/datasets/BHOSAI/PseudoLabelled_Azerbaijani_Voices)`                          | `Kartal-Ol/azb-asr-corpus`                  |
+| AZB GoldSet                        | `[Kartal-Ol/AZB-ASR-Gold-Testset](https://huggingface.co/datasets/Kartal-Ol/AZB-ASR-Gold-Testset)`                                    | `Kartal-Ol/AZB-ASR-Gold-Testset`            |
+
 
 ## Training
 

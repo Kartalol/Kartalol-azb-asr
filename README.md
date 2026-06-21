@@ -76,23 +76,6 @@ Entries are reported as **WER / CER / DIR**.
 * Cross-lingual fine-tuning with related languages such as **North Azerbaijani**, **Turkish**, and **Farsi** improves performance on the community-curated test set compared with several general Whisper baselines.
 * The gap between Community and GoldSet results shows that the GoldSet is more challenging and better reflects broader benchmark conditions.
 
-## Reproducing Evaluation
-
-```bash
-python evaluate.py \
-  --model_name YOUR_MODEL_OR_CHECKPOINT \
-  --dataset_name Kartal-Ol/AZB-ASR-Gold-Testset \
-  --metrics wer cer dir
-```
-
-## Hugging Face Resources
-
-| Resource          | Link                                                             |
-| ----------------- | ---------------------------------------------------------------- |
-| ASR corpus        | `https://huggingface.co/datasets/Kartal-Ol/azb-asr-corpus`       |
-| GoldSet benchmark | `https://huggingface.co/datasets/Kartal-Ol/AZB-ASR-Gold-Testset` |
-| Model             | `https://huggingface.co/YOUR_MODEL_NAME`                         |
-
 
 ## Installation
 
@@ -157,11 +140,7 @@ python decode_with_kenlm.py \
 If you use this code, model, or dataset, please cite:
 
 ```bibtex
-@article{your2026southazerbaijaniasr,
-  title={Preserving the Iranian Turkic Language: A Community-Based ASR Dataset and Model Evaluation for South Azerbaijani},
-  author={...},
-  year={2026}
-}
+@inproceedings{farsi2026preserving, title = {Preserving the Iranian Turkic Language: Community-Driven ASR Datasets and Benchmarking for South Azerbaijani}, author = {Farsi, Farhan and Bali, Shayan and Nourmohammadi Khiarak, Jalil and Aref, Mohammad Hossein and Akbari Saeed, Taher}, booktitle = {Proceedings of INTERSPEECH 2026}, year = {2026} }
 ```
 
 ## License

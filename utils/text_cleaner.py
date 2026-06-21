@@ -2,6 +2,7 @@ import pandas as pd
 import re
 import csv
 import re
+from digit_conversion import replace_numbers_in_text 
 
 _num_words = {
     "بیر": 1,  # 1
@@ -37,7 +38,6 @@ def count_words(sentence):
 
 def words_in_paranthesis(sent):
     return re.findall(r'\([^)]*\)', sent)
-
 
 def have_speciall(text):
     if '٪' in text or '$' in text or '+' in text:
@@ -92,7 +92,10 @@ def number_to_text(number):
         elif size - index == 2:
             my_str += ' ' + _words_num[digit + '0']
         else:
-            my_str += ' ' + _words_num[digit]
+            try:
+                my_str += ' ' + _words_num[digit]
+            except:
+                breakpoint()
     return f'{number} :   {my_str}'
 
 
@@ -103,14 +106,108 @@ def replace_digits_with_string(text):
         text = text.replace(number, number_to_text(number))
 
     return text
+from datasets import Dataset, DatasetDict
 
+import os
+import re
+import unicodedata
+
+def clean_speech_text(text):
+    text = unicodedata.normalize("NFKC", text)  # Normalize Unicode
+    text = re.sub(r'[^\w\s\u0600-\u06FF]', '', text)  # Remove punctuation except Persian/Arabic script
+    text = re.sub(r'\s+', ' ', text).strip()  # Remove extra spaces
+    text = text.replace("\u200c", "").replace("\xa0", "")
+    text = re.sub(r'[.,،؛;!?/]', '', text)
+
+    return text
+
+import librosa
 if __name__ == '__main__':
-    df1 = pd.read_csv('../book1.csv')
-    df2 = pd.read_csv('../book2.csv')
-    df3 = pd.read_csv('../book3.csv')
-    df4 = pd.read_csv('../book4.csv')
-    df5 = pd.read_csv('../book5.csv')
-    print(f'{len(df1)}  {len(df2)} {len(df3)}  {len(df4)}  {len(df5)}')
+    path = "/home/omniaz/Desktop/2023/projects/Kartalol-speech-recognition/dataset/Kartal Ol Gold Test set/"
+    data = pd.read_excel(path+'sentences.xlsx')
+    voices_list = os.listdir(path+"voices")
+    # Ensure that ids in filenames match the Excel file
+    audio_files = [
+            os.path.join(path+"voices", f)
+            for f in os.listdir(path+"voices")
+            if f.endswith(".ogg")
+        ]
+    dataset_entries = []
+    # Ensure that ids in filenames match the Excel file
+    male = [
+        "jalil", 
+        "hasan", 
+        "Application_support", 
+        "qhashimi",
+        "javad",
+        "Aamin1989",
+        "aamin",
+        "beheshti",
+        "m=qhashimi",
+        "akbar",
+        "Avatar",
+        "hojatmosavi",
+        "morteza1376",
+        "mehdi",
+        "mhakan",
+        "behnam",
+        "Aamin1989",
+        "dadrasarsalani",
+        "ilki",
+        "dadarasaslani",
+        "pasha",
+        "turk_termili",
+        "elqami44",
+        "avatar",
+        "Turk_tarmili",
+        "ramin_g136075"
+
+        ]
+
+    for f in audio_files:
+        file_id = os.path.splitext(os.path.basename(f))[0].split("-")[0]
+        try:
+            if int(file_id) in data["id"]:
+                index_list = data.index[data['id'] == int(file_id)].tolist()
+                sentence = data["azb"].iloc[index_list].values[0]
+                y, sr = librosa.load(f, sr=None)  # Load with original sampling rate
+
+                # Calculate duration
+                duration = librosa.get_duration(y=y, sr=sr)
+                
+                r_f = replace_numbers_in_text(sentence)
+                c_word = count_words(r_f)
+                text = clean_speech_text(r_f)
+                if len(f.split("/")[-1].split("-")[1]) == 1:
+                    gen = f.split("/")[-1].split("-")[1]
+                elif f.split("/")[-1].split("-")[1] in male:
+                    gen = "m"
+                else:
+                    gen = "f"
+                    print(f.split("/")[-1].split("-")[1])
+                dataset_entries.append({
+                "audio_filepath": "voices/"+f.split("/")[-1],
+                "labels": text,
+                "count_words": c_word,
+                "voice_duration": duration,
+                "gender": gen,
+            })
+        except:
+            breakpoint()
+
+    # Convert to a Hugging Face Dataset
+    full_dataset = Dataset.from_list(dataset_entries)
+    # Create DatasetDict
+    dataset_dict = DatasetDict({
+        "test": full_dataset
+    })
+    dataset_dict.save_to_disk("ASR-AZB-Gold-TestSet")
+    from datasets import DatasetDict
+
+    # Save as Parquet
+    dataset_dict.save_to_disk("ASR-AZB-Gold-TestSet")
+    dataset_dict["test"].to_parquet("ASR-AZB-Gold-TestSet.parquet")
+
 
     # full_txt = ' '
     # with open('book5.txt') as f:

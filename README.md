@@ -7,7 +7,7 @@ This repository provides scripts for fine-tuning ASR models, evaluating benchmar
 
 | Resource       | Link                                                             |
 | -------------- | ---------------------------------------------------------------- |
-| Model          | `https://huggingface.co/...`                                     |
+| Model          | `https://huggingface.co/Kartal-Ol/ASR-AZB`                                     |
 | Dataset        | `https://huggingface.co/datasets/Kartal-Ol/azb-asr-corpus`       |
 | Gold benchmark | `https://huggingface.co/datasets/Kartal-Ol/AZB-ASR-Gold-Testset` |
 | Paper          | `Preserving the Iranian Turkic Language: Community-Driven ASR Datasets and Benchmarking for South Azerbaijani`                                                    |

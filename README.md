@@ -208,7 +208,13 @@ python decode_with_kenlm.py \
 If you use this code, model, or dataset, please cite:
 
 ```bibtex
-@inproceedings{farsi2026preserving, title = {Preserving the Iranian Turkic Language: Community-Driven ASR Datasets and Benchmarking for South Azerbaijani}, author = {Farsi, Farhan and Bali, Shayan and Nourmohammadi Khiarak, Jalil and Aref, Mohammad Hossein and Akbari Saeed, Taher}, booktitle = {Proceedings of INTERSPEECH 2026}, year = {2026} }
+@inproceedings{farsi2026preserving,
+
+title = {Preserving the Iranian Turkic Language: Community-Driven ASR Datasets and Benchmarking for South Azerbaijani},
+
+author = {Farsi, Farhan and Bali, Shayan and Nourmohammadi Khiarak, Jalil and Aref, Mohammad Hossein and Akbari Saeed, Taher},
+
+booktitle = {Proceedings of INTERSPEECH 2026}, year = {2026} }
 ```
 
 ## License

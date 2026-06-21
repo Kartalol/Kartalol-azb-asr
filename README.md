@@ -156,10 +156,10 @@ goldset = load_dataset("Kartal-Ol/AZB-ASR-Gold-Testset")
 
 | Component                          | Audio Source                                                        | Transcript / Text Source                    |
 | ---------------------------------- | ------------------------------------------------------------------- | ------------------------------------------- |
-| Community ASR data                 | `[yoyo-research-group/south-azerbaijani-asr](https://huggingface.co/datasets/yoyo-research-group/south-azerbaijani-asr)`                         | `yoyo-research-group/south-azerbaijani-asr` |
-| VoxLingua107 Azerbaijani           | `[voxlingua107](https://cs.taltech.ee/staff/tanel.alumae/data/voxlingua107/az.zip)` | `Kartal-Ol/azb-asr-corpus`                  |
-| BHOSAI pseudo-labelled Azerbaijani | `[BHOSAI/PseudoLabelled_Azerbaijani_Voices](https://huggingface.co/datasets/BHOSAI/PseudoLabelled_Azerbaijani_Voices)`                          | `Kartal-Ol/azb-asr-corpus`                  |
-| AZB GoldSet                        | `[Kartal-Ol/AZB-ASR-Gold-Testset](https://huggingface.co/datasets/Kartal-Ol/AZB-ASR-Gold-Testset)`                                    | `Kartal-Ol/AZB-ASR-Gold-Testset`            |
+| Community ASR data                 | [yoyo-research-group/south-azerbaijani-asr](https://huggingface.co/datasets/yoyo-research-group/south-azerbaijani-asr)                        | `yoyo-research-group/south-azerbaijani-asr` |
+| VoxLingua107 Azerbaijani           | [voxlingua107](https://cs.taltech.ee/staff/tanel.alumae/data/voxlingua107/az.zip) | `Kartal-Ol/azb-asr-corpus`                  |
+| BHOSAI pseudo-labelled Azerbaijani | [BHOSAI/PseudoLabelled_Azerbaijani_Voices](https://huggingface.co/datasets/BHOSAI/PseudoLabelled_Azerbaijani_Voices)                          | `Kartal-Ol/azb-asr-corpus`                  |
+| AZB GoldSet                        | [Kartal-Ol/AZB-ASR-Gold-Testset](https://huggingface.co/datasets/Kartal-Ol/AZB-ASR-Gold-Testset)                                   | `Kartal-Ol/AZB-ASR-Gold-Testset`            |
 
 
 ## Training

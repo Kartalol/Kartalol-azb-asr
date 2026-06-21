@@ -58,16 +58,16 @@ All models below were trained exclusively using the **Community-only** regime.
 
 Entries are reported as **WER / CER / DIR**.
 
-| Model                           |                External |              Community |                GoldSet |
-| ------------------------------- | ----------------------: | ---------------------: | ---------------------: |
-| Whisper-Tiny                    |     140.0 / 90.0 / 0.48 |     39.0 / 16.0 / 4.15 |     84.0 / 38.0 / 0.25 |
-| Whisper-Base                    |     122.0 / 68.0 / 0.44 |     33.0 / 14.0 / 2.67 |     84.0 / 36.0 / 0.25 |
-| Whisper-Small                   |     149.0 / 99.0 / 0.38 |     35.0 / 16.0 / 1.47 |     79.0 / 30.0 / 0.21 |
-| Whisper-Small-Farsi             | 136.0 / 76.0 / **0.32** |     31.0 / 13.0 / 2.44 |     79.0 / 31.0 / 0.22 |
-| Whisper-Small-North Azerbaijani |     130.0 / 74.0 / 0.35 | **22.0 / 13.0 / 2.60** |     82.0 / 33.0 / 0.24 |
-| Whisper-Small-Turkish           |     159.0 / 96.0 / 0.44 | 29.0 / **12.0** / 2.48 |     79.0 / 29.0 / 0.21 |
-| Whisper-Small-Arabic            |     152.0 / 96.0 / 0.50 |     43.0 / 24.0 / 3.62 |     83.0 / 42.0 / 0.37 |
-| MMS                             |                       — | 50.0 / 20.0 / **0.21** | **63.0 / 18.0 / 0.13** |
+| Model                           | Model Download                                                                                 |                External |              Community |                GoldSet |
+| ------------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------: | ---------------------: | ---------------------: |
+| Whisper-Tiny                    | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-tiny)                    |     140.0 / 90.0 / 0.48 |     39.0 / 16.0 / 4.15 |     84.0 / 38.0 / 0.25 |
+| Whisper-Base                    | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-base)                    |     122.0 / 68.0 / 0.44 |     33.0 / 14.0 / 2.67 |     84.0 / 36.0 / 0.25 |
+| Whisper-Small                   | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-Small)                                                                                            |     149.0 / 99.0 / 0.38 |     35.0 / 16.0 / 1.47 |     79.0 / 30.0 / 0.21 |
+| Whisper-Small-Farsi             | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-Small-Farsi)                                                                                            | 136.0 / 76.0 / **0.32** |     31.0 / 13.0 / 2.44 |     79.0 / 31.0 / 0.22 |
+| Whisper-Small-North Azerbaijani | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-small-north-azerbaijani) |     130.0 / 74.0 / 0.35 | **22.0 / 13.0 / 2.60** |     82.0 / 33.0 / 0.24 |
+| Whisper-Small-Turkish           | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-small-turkish)           |     159.0 / 96.0 / 0.44 | 29.0 / **12.0** / 2.48 |     79.0 / 29.0 / 0.21 |
+| Whisper-Small-Arabic            | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-Small-Arabic)                                                                                            |     152.0 / 96.0 / 0.50 |     43.0 / 24.0 / 3.62 |     83.0 / 42.0 / 0.37 |
+| MMS                             | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/mms)                             |                       — | 50.0 / 20.0 / **0.21** | **63.0 / 18.0 / 0.13** |
 
 ## Key Observations
 
@@ -192,14 +192,13 @@ python decode_with_kenlm.py \
 ## Repository Structure
 
 ```text
-.
-├── train.py
-├── evaluate.py
-├── decode_with_kenlm.py
+script/training/small_stt
+    ├── train.py
+    ├── eval.py
+    ├── inference.py
 ├── requirements.txt
-├── configs/
 ├── scripts/
-├── examples/
+├── utils/
 └── README.md
 ```
 

@@ -19,7 +19,6 @@ model files in Git.
 
 | Role | Resource | Use |
 |---|---|---|
-| Community | [yoyo-research-group/south-azerbaijani-asr](https://huggingface.co/datasets/yoyo-research-group/south-azerbaijani-asr) | Training and Community test |
 | Corpus/index | [Kartal-Ol/azb-asr-corpus](https://huggingface.co/datasets/Kartal-Ol/azb-asr-corpus) | Community/external transcript resources |
 | GoldSet | [Kartal-Ol/AZB-ASR-Gold-Testset](https://huggingface.co/datasets/Kartal-Ol/AZB-ASR-Gold-Testset) | Evaluation only |
 | External | [BHOSAI/PseudoLabelled_Azerbaijani_Voices](https://huggingface.co/datasets/BHOSAI/PseudoLabelled_Azerbaijani_Voices) | Full-dataset training component |

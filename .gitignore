@@ -1,2 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# OS/editor/secrets
+.DS_Store
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+
+# ML outputs and local data
+outputs/
+checkpoints/
+wandb/
+runs/
 dataset/
+data/
+models/
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.safetensors
 *.wav
+*.flac
+*.mp3
+*.ogg
+
+# Local/vendor experiments and superseded prototypes
+/extra/
+/baseline (copy).py
+configs/*.local.yaml

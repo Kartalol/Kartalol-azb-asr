@@ -1,0 +1,22 @@
+model_id: facebook/mms-1b-all
+target_lang: azb
+dataset: community
+train_split: "train[:90%]"
+eval_split: "train[90%:]"  # TODO: replace with the final paper validation IDs if available.
+output_dir: outputs/mms-community
+seed: 42
+epochs: 10
+learning_rate: 0.0002
+train_batch_size: 8
+eval_batch_size: 8
+gradient_accumulation: 2
+warmup_steps: 500
+weight_decay: 0.01
+fp16: false  # Enable explicitly on compatible hardware; original command example used fp16.
+bf16: false
+adapter_only: true
+max_audio_duration: 30.0  # TODO: original MMS script did not filter duration.
+eval_steps: 500
+save_steps: 500
+logging_steps: 50
+save_total_limit: 3

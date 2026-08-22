@@ -44,6 +44,7 @@ default. Public paper checkpoints are collected at
 |---|---|
 | Whisper Tiny | [Kartal-Ol/ASR-AZB — whisper-tiny](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-tiny) |
 | Whisper Base | [Kartal-Ol/ASR-AZB — whisper-base](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-base) |
+| Whisper Base — Full dataset | [Kartal-Ol/ASR-AZB — whisper-base-full](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-base-full) |
 | Whisper Small | [Kartal-Ol/ASR-AZB — whisper-Small](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-Small) |
 | Whisper Small — Farsi | [Kartal-Ol/ASR-AZB — whisper-Small-Farsi](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-Small-Farsi) |
 | Whisper Small — North Azerbaijani | [Kartal-Ol/ASR-AZB — whisper-small-north-azerbaijani](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-small-north-azerbaijani) |
@@ -53,6 +54,16 @@ default. Public paper checkpoints are collected at
 
 The links point directly to each checkpoint directory so model weights,
 processor/tokenizer files, and configuration files can be downloaded together.
+
+### Google Colab inference workshop
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Kartalol/Kartalol-azb-asr/blob/code_refactor/docs/colab_inference_demo.ipynb)
+
+The [workshop notebook](docs/colab_inference_demo.ipynb) loads any published
+Whisper checkpoint directly from Hugging Face, accepts an uploaded audio sample,
+and provides one-sample WER, CER, DIR, and auxiliary SER analysis with a word
+alignment. SER is a tutorial diagnostic and is not substituted for DIR in the
+paper benchmark.
 
 ## Benchmark results
 

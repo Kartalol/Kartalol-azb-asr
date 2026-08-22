@@ -56,6 +56,16 @@ default. Public paper checkpoints are collected at
 The links point directly to each checkpoint directory so model weights,
 processor/tokenizer files, and configuration files can be downloaded together.
 
+### Google Colab inference workshop
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Kartalol/Kartalol-azb-asr/blob/code_refactor/docs/colab_inference_demo.ipynb)
+
+The [workshop notebook](docs/colab_inference_demo.ipynb) loads any published
+Whisper checkpoint directly from Hugging Face, accepts an uploaded audio sample,
+and provides one-sample WER, CER, DIR, and auxiliary SER analysis with a word
+alignment. SER is a tutorial diagnostic and is not substituted for DIR in the
+paper benchmark.
+
 ## Benchmark results
 
 WER and CER are percentages. DIR is the raw word-level deletion/insertion

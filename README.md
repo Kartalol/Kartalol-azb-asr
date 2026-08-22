@@ -45,6 +45,7 @@ default. Public paper checkpoints are collected at
 |---|---|
 | Whisper Tiny | [Kartal-Ol/ASR-AZB — whisper-tiny](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-tiny) |
 | Whisper Base | [Kartal-Ol/ASR-AZB — whisper-base](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-base) |
+| Whisper Base — Full dataset | [Kartal-Ol/ASR-AZB — whisper-base-full](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-base-full) |
 | Whisper Small | [Kartal-Ol/ASR-AZB — whisper-Small](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-Small) |
 | Whisper Small — Farsi | [Kartal-Ol/ASR-AZB — whisper-Small-Farsi](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-Small-Farsi) |
 | Whisper Small — North Azerbaijani | [Kartal-Ol/ASR-AZB — whisper-small-north-azerbaijani](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-small-north-azerbaijani) |

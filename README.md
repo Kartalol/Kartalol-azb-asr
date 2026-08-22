@@ -38,6 +38,22 @@ Arabic cross-lingual initializations are supplied. The MMS trainer activates the
 default. Public paper checkpoints are collected at
 [Kartal-Ol/ASR-AZB](https://huggingface.co/Kartal-Ol/ASR-AZB).
 
+### Hugging Face model downloads
+
+| Model | Checkpoint files |
+|---|---|
+| Whisper Tiny | [Kartal-Ol/ASR-AZB — whisper-tiny](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-tiny) |
+| Whisper Base | [Kartal-Ol/ASR-AZB — whisper-base](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-base) |
+| Whisper Small | [Kartal-Ol/ASR-AZB — whisper-Small](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-Small) |
+| Whisper Small — Farsi | [Kartal-Ol/ASR-AZB — whisper-Small-Farsi](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-Small-Farsi) |
+| Whisper Small — North Azerbaijani | [Kartal-Ol/ASR-AZB — whisper-small-north-azerbaijani](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-small-north-azerbaijani) |
+| Whisper Small — Turkish | [Kartal-Ol/ASR-AZB — whisper-small-turkish](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-small-turkish) |
+| Whisper Small — Arabic | [Kartal-Ol/ASR-AZB — whisper-Small-Arabic](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-Small-Arabic) |
+| MMS | [Kartal-Ol/ASR-AZB — mms](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/mms) |
+
+The links point directly to each checkpoint directory so model weights,
+processor/tokenizer files, and configuration files can be downloaded together.
+
 ## Benchmark results
 
 WER and CER are percentages. DIR is the raw word-level deletion/insertion

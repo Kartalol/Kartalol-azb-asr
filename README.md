@@ -1,222 +1,197 @@
 # South Azerbaijani ASR Benchmark
-**Preserving the Iranian Turkic Language: Community-Driven ASR Datasets and Benchmarking for South Azerbaijani** 
 
-Official training and evaluation code for **South Azerbaijani Automatic Speech Recognition (ASR)**.
-This repository provides scripts for fine-tuning ASR models, evaluating benchmark datasets, and reproducing reported WER/CER/SER results.
+Official research repository for the INTERSPEECH 2026 paper **“Preserving the
+Iranian Turkic Language: Community-Driven ASR Datasets and Benchmarking for
+South Azerbaijani.”** It provides reproducible dataset loading, South
+Azerbaijani text normalization, Whisper and MMS fine-tuning, Whisper/MMS/CTC
+inference, and WER/CER/DIR benchmark evaluation without storing large audio or
+model files in Git.
 
-## Resources
+## Contributions
 
-| Resource       | Link                                                             |
-| -------------- | ---------------------------------------------------------------- |
-| Models          | [https://huggingface.co/Kartal-Ol/ASR-AZB](https://huggingface.co/Kartal-Ol/ASR-AZB)                                    |
-| Dataset        | [https://huggingface.co/datasets/Kartal-Ol/azb-asr-corpus](https://huggingface.co/datasets/Kartal-Ol/azb-asr-corpus)      |
-| Gold benchmark | [https://huggingface.co/datasets/Kartal-Ol/AZB-ASR-Gold-Testset](https://huggingface.co/datasets/Kartal-Ol/AZB-ASR-Gold-Testset) |
-| Paper          | **Preserving the Iranian Turkic Language: Community-Driven ASR Datasets and Benchmarking for South Azerbaijani**                                                   |
+- Community-driven South Azerbaijani speech resources in Perso-Arabic script.
+- Evaluation across Community, External, and held-out GoldSet data.
+- Whisper Tiny/Base/Small, cross-lingual Whisper, and MMS-1B-All experiments.
+- A single explicit evaluation protocol for WER, CER, and deletion/insertion
+  ratio (DIR).
 
-## Benchmarking
+## Datasets
 
-We evaluate South Azerbaijani ASR models using three metrics:
+| Role | Resource | Use |
+|---|---|---|
+| Community | [yoyo-research-group/south-azerbaijani-asr](https://huggingface.co/datasets/yoyo-research-group/south-azerbaijani-asr) | Training and Community test |
+| Corpus/index | [Kartal-Ol/azb-asr-corpus](https://huggingface.co/datasets/Kartal-Ol/azb-asr-corpus) | Community/external transcript resources |
+| GoldSet | [Kartal-Ol/AZB-ASR-Gold-Testset](https://huggingface.co/datasets/Kartal-Ol/AZB-ASR-Gold-Testset) | Evaluation only |
+| External | [BHOSAI/PseudoLabelled_Azerbaijani_Voices](https://huggingface.co/datasets/BHOSAI/PseudoLabelled_Azerbaijani_Voices) | Full-dataset training component |
+| External | [VoxLingua107](https://cs.taltech.ee/staff/tanel.alumae/data/voxlingua107/) Azerbaijani | Full-dataset training component |
 
-* **WER (%)**: Word Error Rate
-* **CER (%)**: Character Error Rate
-* **DIR**: Deletion/Insertion Ratio, reported as a raw ratio
+All source rows are converted internally to `audio`, `text`, and optional
+`speaker_id`/`duration`. GoldSet is programmatically rejected by training
+commands. See [dataset roles and known schema TODOs](docs/datasets.md).
 
-Lower **WER** and **CER** indicate better recognition performance. DIR is reported to describe the error profile and is not used as the primary ranking metric.
+## Models
 
-### Evaluation Sets
+The unified Whisper trainer accepts `openai/whisper-tiny`,
+`openai/whisper-base`, `openai/whisper-small`, or any compatible Hugging Face
+Whisper checkpoint. This is also how the Farsi, North Azerbaijani, Turkish, and
+Arabic cross-lingual initializations are supplied. The MMS trainer activates the
+`azb` adapter of `facebook/mms-1b-all` and trains the adapter and CTC head by
+default. Public paper checkpoints are collected at
+[Kartal-Ol/ASR-AZB](https://huggingface.co/Kartal-Ol/ASR-AZB).
 
-| Test Set  | Description                                                    |
-| --------- | -------------------------------------------------------------- |
-| External  | Azerbaijani external test data                                 |
-| Community | Fully normalized community-curated South Azerbaijani test data |
-| GoldSet   | Released South Azerbaijani benchmark set                       |
+## Benchmark results
 
-### Training Regimes
+WER and CER are percentages. DIR is the raw word-level deletion/insertion
+ratio, `deletions / insertions`. Lower WER and CER are better. These values are
+transcribed unchanged from the repository’s paper README; they have not been
+recomputed during cleanup.
 
-| Training Setup | Description                                                                |
-| -------------- | -------------------------------------------------------------------------- |
-| Community-only | Trained only on the normalized community-curated South Azerbaijani dataset |
-| Full dataset   | Trained on the combination of community-curated and external data sources  |
-| No Fine-Tune   | Evaluated without task-specific fine-tuning                                |
+| Model | Training Setup | External | Community | GoldSet |
+|---|---|---:|---:|---:|
+| Whisper-Tiny | Full dataset | 121.0 / 67.0 / 0.31 | 53.0 / 32.0 / 0.29 | 77.0 / 34.0 / 0.24 |
+| Whisper-Tiny | Community-only | 140.0 / 90.0 / 0.48 | 39.0 / 16.0 / 4.15 | 84.0 / 38.0 / 0.25 |
+| Whisper-Base | Full dataset | **64.0 / 44.0 / 0.14** | 49.0 / 41.0 / 0.27 | 70.0 / 28.0 / 0.19 |
+| Whisper-Base | Community-only | 122.0 / 68.0 / 0.44 | **33.0 / 14.0 / 2.67** | 84.0 / 36.0 / 0.25 |
+| MMS | No Fine-Tune | 106.0 / 50.0 / 0.15 | 70.0 / 29.0 / **0.20** | 73.0 / 24.0 / **0.08** |
+| MMS | Community-only | — | 50.0 / 19.0 / 0.21 | **63.0 / 18.0 / 0.13** |
 
-## Main Benchmark
+Community-only cross-lingual comparison (WER / CER / DIR):
 
-Entries are reported as **WER / CER / DIR**.
-
-| Model        | Training Setup |               External |              Community |                GoldSet |
-| ------------ | -------------- | ---------------------: | ---------------------: | ---------------------: |
-| Whisper-Tiny | Full dataset   |    121.0 / 67.0 / 0.31 |     53.0 / 32.0 / 0.29 |     77.0 / 34.0 / 0.24 |
-| Whisper-Tiny | Community-only |    140.0 / 90.0 / 0.48 |     39.0 / 16.0 / 4.15 |     84.0 / 38.0 / 0.25 |
-| Whisper-Base | Full dataset   | **64.0 / 44.0 / 0.14** |     49.0 / 41.0 / 0.27 |     70.0 / 28.0 / 0.19 |
-| Whisper-Base | Community-only |    122.0 / 68.0 / 0.44 | **33.0 / 14.0 / 2.67** |     84.0 / 36.0 / 0.25 |
-| MMS          | No Fine-Tune   |    106.0 / 50.0 / 0.15 | 70.0 / 29.0 / **0.20** | 73.0 / 24.0 / **0.08** |
-| MMS          | Community-only |                      — |     50.0 / 19.0 / 0.21 | **63.0 / 18.0 / 0.13** |
-
-## Community-Only Model Comparison
-
-All models below were trained exclusively using the **Community-only** regime.
-
-Entries are reported as **WER / CER / DIR**.
-
-| Model                           | Model Download                                                                                 |                External |              Community |                GoldSet |
-| ------------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------: | ---------------------: | ---------------------: |
-| Whisper-Tiny                    | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-tiny)                    |     140.0 / 90.0 / 0.48 |     39.0 / 16.0 / 4.15 |     84.0 / 38.0 / 0.25 |
-| Whisper-Base                    | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-base)                    |     122.0 / 68.0 / 0.44 |     33.0 / 14.0 / 2.67 |     84.0 / 36.0 / 0.25 |
-| Whisper-Small                   | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-Small)                                                                                            |     149.0 / 99.0 / 0.38 |     35.0 / 16.0 / 1.47 |     79.0 / 30.0 / 0.21 |
-| Whisper-Small-Farsi             | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-Small-Farsi)                                                                                            | 136.0 / 76.0 / **0.32** |     31.0 / 13.0 / 2.44 |     79.0 / 31.0 / 0.22 |
-| Whisper-Small-North Azerbaijani | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-small-north-azerbaijani) |     130.0 / 74.0 / 0.35 | **22.0 / 13.0 / 2.60** |     82.0 / 33.0 / 0.24 |
-| Whisper-Small-Turkish           | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-small-turkish)           |     159.0 / 96.0 / 0.44 | 29.0 / **12.0** / 2.48 |     79.0 / 29.0 / 0.21 |
-| Whisper-Small-Arabic            | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/whisper-Small-Arabic)                                                                                            |     152.0 / 96.0 / 0.50 |     43.0 / 24.0 / 3.62 |     83.0 / 42.0 / 0.37 |
-| MMS                             | [Download](https://huggingface.co/Kartal-Ol/ASR-AZB/tree/main/mms)                             |                       — | 50.0 / 20.0 / **0.21** | **63.0 / 18.0 / 0.13** |
-
-## Key Observations
-
-* On the **Community** test set, the best WER is achieved by **Whisper-Small-North Azerbaijani** with **22.0% WER**.
-* On the **GoldSet**, **MMS** achieves the best overall result with **63.0% WER** and **18.0% CER**.
-* Among Whisper-based models on the GoldSet, **Whisper-Tiny trained on the full dataset** achieves the lowest WER, with **77.0% WER**.
-* Cross-lingual fine-tuning with related languages such as **North Azerbaijani**, **Turkish**, and **Farsi** improves performance on the community-curated test set compared with several general Whisper baselines.
-* The gap between Community and GoldSet results shows that the GoldSet is more challenging and better reflects broader benchmark conditions.
-
+| Model | External | Community | GoldSet |
+|---|---:|---:|---:|
+| Whisper-Small | 149.0 / 99.0 / 0.38 | 35.0 / 16.0 / 1.47 | 79.0 / 30.0 / 0.21 |
+| Whisper-Small-Farsi | 136.0 / 76.0 / 0.32 | 31.0 / 13.0 / 2.44 | 79.0 / 31.0 / 0.22 |
+| Whisper-Small-North Azerbaijani | 130.0 / 74.0 / 0.35 | 22.0 / 13.0 / 2.60 | 82.0 / 33.0 / 0.24 |
+| Whisper-Small-Turkish | 159.0 / 96.0 / 0.44 | 29.0 / 12.0 / 2.48 | 79.0 / 29.0 / 0.21 |
+| Whisper-Small-Arabic | 152.0 / 96.0 / 0.50 | 43.0 / 24.0 / 3.62 | 83.0 / 42.0 / 0.37 |
 
 ## Installation
 
+Python 3.10 or newer is required. Audio decoding for MP3/OGG may additionally
+require an FFmpeg installation supported by the local audio backend.
+
 ```bash
-git clone https://github.com/Kartalol/Kartalol-azb-asr
+git clone https://github.com/Kartalol/Kartalol-azb-asr.git
 cd Kartalol-azb-asr
-pip install -r requirements.txt
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
 ```
 
-## Dataset
+## Inference
 
-This repository contains the training and evaluation code only. The speech data and transcripts must be downloaded from their original sources. The corpus combines community-collected South Azerbaijani speech, VoxLingua107 Azerbaijani audio, BHOSAI pseudo-labelled Azerbaijani audio, and the released AZB GoldSet benchmark.
-
-
-### 1. AZB ASR corpus and transcripts
-
-The South Azerbaijani ASR corpus and transcript resources are available on Hugging Face:
-
-```python
-from datasets import load_dataset
-
-azb_corpus = load_dataset("Kartal-Ol/azb-asr-corpus")
-```
-
-### 2. Community-collected South Azerbaijani ASR data
-
-The main community-driven ASR dataset is hosted on Hugging Face:
-
-```python
-from datasets import load_dataset
-
-community_dataset = load_dataset("yoyo-research-group/south-azerbaijani-asr")
-```
-This dataset contains the AZB text/transcription resources used to align or support the external audio sources.
-
-### 3. VoxLingua107 Azerbaijani audio
-
-The VoxLingua107 Azerbaijani audio must be downloaded separately from the original source:
+Whisper, MMS, and compatible Wav2Vec2/CTC checkpoints are detected from their
+Transformers configuration. Input is converted to mono and resampled to the
+processor’s required rate.
 
 ```bash
-wget https://cs.taltech.ee/staff/tanel.alumae/data/voxlingua107/az.zip
-unzip az.zip -d data/voxlingua107_az
+python scripts/transcribe.py \
+  --model openai/whisper-tiny \
+  --audio example.ogg
 ```
 
-The corresponding AZB transcripts/resources are available from:
-
-```text
-https://huggingface.co/datasets/Kartal-Ol/azb-asr-corpus
-```
-
-### 4. BHOSAI pseudo-labelled Azerbaijani audio
-
-The BHOSAI pseudo-labelled Azerbaijani voice data is hosted on Hugging Face:
-
-```python
-from datasets import load_dataset
-
-bhosai_audio = load_dataset("BHOSAI/PseudoLabelled_Azerbaijani_Voices")
-```
-
-The corresponding AZB text resources are available from:
-
-```python
-azb_corpus = load_dataset("Kartal-Ol/azb-asr-corpus")
-```
-
-### 5. AZB GoldSet benchmark
-
-The released South Azerbaijani GoldSet benchmark is hosted on Hugging Face:
-
-```python
-from datasets import load_dataset
-
-goldset = load_dataset("Kartal-Ol/AZB-ASR-Gold-Testset")
-```
-
-### Summary of Data Sources
-
-| Component                          | Audio Source                                                        | Transcript / Text Source                    |
-| ---------------------------------- | ------------------------------------------------------------------- | ------------------------------------------- |
-| Community ASR data                 | [yoyo-research-group/south-azerbaijani-asr](https://huggingface.co/datasets/yoyo-research-group/south-azerbaijani-asr)                        | `yoyo-research-group/south-azerbaijani-asr` |
-| VoxLingua107 Azerbaijani           | [voxlingua107](https://cs.taltech.ee/staff/tanel.alumae/data/voxlingua107/az.zip) | `Kartal-Ol/azb-asr-corpus`                  |
-| BHOSAI pseudo-labelled Azerbaijani | [BHOSAI/PseudoLabelled_Azerbaijani_Voices](https://huggingface.co/datasets/BHOSAI/PseudoLabelled_Azerbaijani_Voices)                          | `Kartal-Ol/azb-asr-corpus`                  |
-| AZB GoldSet                        | [Kartal-Ol/AZB-ASR-Gold-Testset](https://huggingface.co/datasets/Kartal-Ol/AZB-ASR-Gold-Testset)                                   | `Kartal-Ol/AZB-ASR-Gold-Testset`            |
-
+Use `--device cpu`, `--device cuda`, or `--device cuda:1` to override automatic
+selection. Batch inference is available with `--folder AUDIO_DIRECTORY`; add
+`--recursive` if needed and `--output-json outputs/transcriptions.json` for
+machine-readable output.
 
 ## Training
 
+The checked-in configurations preserve parameters recoverable from the old
+scripts. Every inferred reproducibility default is marked `TODO` in YAML.
+
 ```bash
-python train.py \
-  --dataset_name Kartal-Ol/azb-asr-corpus \
-  --model_name facebook/w2v-bert-2.0 \
-  --output_dir outputs/azb-asr
+python scripts/train_whisper.py --config configs/whisper_tiny_community.yaml
+python scripts/train_whisper.py --config configs/whisper_base_full.yaml
+python scripts/train_mms.py --config configs/mms_community.yaml --fp16
 ```
+
+For a cross-lingual Whisper experiment, override the compatible checkpoint and
+output directory without editing source:
+
+```bash
+python scripts/train_whisper.py \
+  --config configs/whisper_small_community.yaml \
+  --model-id YOUR_COMPATIBLE_WHISPER_CHECKPOINT \
+  --output-dir outputs/whisper-small-cross-lingual
+```
+
+Available paper configurations:
+
+- `configs/whisper_tiny_community.yaml`
+- `configs/whisper_tiny_full.yaml`
+- `configs/whisper_base_community.yaml`
+- `configs/whisper_base_full.yaml`
+- `configs/whisper_small_community.yaml`
+- `configs/mms_community.yaml`
 
 ## Evaluation
 
-```bash
-python evaluate.py \
-  --model_name YOUR_HF_MODEL_NAME \
-  --dataset_name Kartal-Ol/AZB-ASR-Gold-Testset
-```
-
-## Language Model Decoding
+Official scores use raw references and predictions; normalization is never
+enabled silently.
 
 ```bash
-python decode_with_kenlm.py \
-  --model_name YOUR_HF_MODEL_NAME \
-  --kenlm_model path/to/azb_5gram.arpa \
-  --dataset_name Kartal-Ol/AZB-ASR-Gold-Testset
+python scripts/evaluate.py \
+  --model YOUR_MODEL_OR_HF_ID \
+  --dataset goldset \
+  --split test \
+  --normalization none \
+  --output-dir outputs/goldset
 ```
 
-## Repository Structure
+This writes `metrics.json` and `predictions.csv`. Use `--dataset community` or
+`--dataset external` for the other benchmark sets. An additional normalized
+analysis can use `--normalization published`; see
+[normalization documentation](docs/normalization.md).
+
+## Reproducing the benchmark
+
+Copy the example manifest, replace placeholder checkpoints, and run:
+
+```bash
+cp configs/benchmark.example.yaml configs/benchmark.local.yaml
+python scripts/reproduce_benchmark.py \
+  --manifest configs/benchmark.local.yaml \
+  --output-dir outputs/benchmark
+```
+
+The command evaluates each supplied checkpoint on External, Community, and
+GoldSet and writes CSV, JSON, and Markdown tables in the paper format. Exact
+reproduction still requires the final checkpoint IDs, exact Hugging Face
+External split/config, package/environment lock, and confirmation of the
+original random seeds and generation settings; these were not recoverable from
+the checked-in experiment scripts.
+
+## Repository structure
 
 ```text
-script/training/small_stt
-    ├── train.py
-    ├── eval.py
-    ├── inference.py
-├── requirements.txt
-├── scripts/
-├── utils/
-└── README.md
+configs/                 Paper experiment and benchmark manifests
+docs/                    Dataset and normalization protocol
+legacy/                  Sanitized historical experiment notes
+scripts/                 Training, inference, evaluation, reproduction CLIs
+src/kartalol_azb_asr/    Reusable data, audio, normalization, metrics, inference
+tests/                   Lightweight unit tests (no model downloads)
 ```
 
 ## Citation
 
-If you use this code, model, or dataset, please cite:
-
 ```bibtex
 @inproceedings{farsi2026preserving,
-
-title = {Preserving the Iranian Turkic Language: Community-Driven ASR Datasets and Benchmarking for South Azerbaijani},
-
-author = {Farsi, Farhan and Bali, Shayan and Nourmohammadi Khiarak, Jalil and Aref, Mohammad Hossein and Akbari Saeed, Taher},
-
-booktitle = {Proceedings of INTERSPEECH 2026}, year = {2026} }
+  title     = {Preserving the Iranian Turkic Language: Community-Driven ASR
+               Datasets and Benchmarking for South Azerbaijani},
+  author    = {Farsi, Farhan and Bali, Shayan and Nourmohammadi Khiarak, Jalil
+               and Aref, Mohammad Hossein and Akbari Saeed, Taher},
+  booktitle = {Proceedings of INTERSPEECH 2026},
+  year      = {2026}
+}
 ```
 
-## License
+Machine-readable citation metadata is in [CITATION.cff](CITATION.cff).
 
-This code is released under the MIT License.
-The datasets and models are released under their respective Hugging Face licenses.
+## License and acknowledgements
+
+Code is released under the existing [MIT License](LICENSE). Datasets and models
+retain the licenses shown on their respective hosting pages.
+
+We thank the Kartal Ol Foundation and every community contributor whose speech,
+transcription, review, and organizational work made these resources possible.

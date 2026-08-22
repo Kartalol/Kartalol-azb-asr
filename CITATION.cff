@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the INTERSPEECH 2026 paper."
+title: "Preserving the Iranian Turkic Language: Community-Driven ASR Datasets and Benchmarking for South Azerbaijani"
+type: software
+version: 0.1.0
+authors:
+  - family-names: Farsi
+    given-names: Farhan
+  - family-names: Bali
+    given-names: Shayan
+  - family-names: Nourmohammadi Khiarak
+    given-names: Jalil
+  - family-names: Aref
+    given-names: Mohammad Hossein
+  - family-names: Akbari Saeed
+    given-names: Taher
+repository-code: "https://github.com/Kartalol/Kartalol-azb-asr"
+license: MIT
+preferred-citation:
+  type: conference-paper
+  title: "Preserving the Iranian Turkic Language: Community-Driven ASR Datasets and Benchmarking for South Azerbaijani"
+  year: 2026
+  conference:
+    name: INTERSPEECH 2026
+  authors:
+    - family-names: Farsi
+      given-names: Farhan
+    - family-names: Bali
+      given-names: Shayan
+    - family-names: Nourmohammadi Khiarak
+      given-names: Jalil
+    - family-names: Aref
+      given-names: Mohammad Hossein
+    - family-names: Akbari Saeed
+      given-names: Taher

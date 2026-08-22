@@ -1,0 +1,21 @@
+# Copy this file and replace checkpoint values with local paths or public HF IDs.
+datasets:
+  external:
+    dataset: external
+    split: test
+    # TODO: set config if Kartal-Ol/azb-asr-corpus publishes External as a config.
+  community:
+    dataset: community
+    split: test
+  goldset:
+    dataset: goldset
+    split: test
+models:
+  - name: Whisper-Tiny
+    slug: whisper-tiny-community
+    training_setup: Community-only
+    checkpoint: YOUR_WHISPER_TINY_CHECKPOINT
+  - name: MMS
+    slug: mms-community
+    training_setup: Community-only
+    checkpoint: YOUR_MMS_CHECKPOINT
